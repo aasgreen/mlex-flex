@@ -9,9 +9,8 @@ COPY requirements.txt requirements.txt
 RUN apt-get update && apt-get install -y \
     build-essential \
     wget \
-    python3-pip 
-
-RUN pip3 install --upgrade pip &&\
+    python3-pip \
+    && pip3 install --upgrade pip &&\
     pip3 install -r requirements.txt 
 
 #CMD ["bash","call_defect.sh"]

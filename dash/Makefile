@@ -1,8 +1,8 @@
-#TAG    			:= $$(git describe --tags)
-TAG 			:= latest	
+TAG    			:= $$(git describe --tags)
+#TAG 			:= latest	
 #REGISTRY		:= registry-1.docker.io
 USER 			:= aasgreen
-PROJECT			:= dash-seg
+PROJECT			:= mlexflex-demo
 #REGISTRY_NAME	:= ${REGISTRY}/${PROJECT}/${IMG}
 
 IMG_WEB_SVC    		:= ${USER}/${PROJECT}:${TAG}
@@ -30,3 +30,6 @@ clean:
 	-rm .python_history
 	-rm -rf .config
 	-rm -rf .cache
+
+push_docker:
+	docker push ${IMG_WEB_SVC}

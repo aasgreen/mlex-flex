@@ -1,0 +1,69 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DEFAULT_IMAGE	app.py	/^DEFAULT_IMAGE = PIL.Image.open(DEFAULT_IMAGE_PATH)$/;"	v
+DEFAULT_IMAGE_PATH	app.py	/^DEFAULT_IMAGE_PATH = pathlib.Path('..\/data\/input\/sample_data.tiff')$/;"	v
+_pilim_if_path	plot_common.py	/^def _pilim_if_path(im):$/;"	f
+add_layout_images_to_fig	plot_common.py	/^def add_layout_images_to_fig(fig, images, update_ranges=True):$/;"	f
+align	app.py	/^                        align="center",$/;"	v
+align	app.py	/^                align="center",$/;"	v
+app	app.py	/^app = dash.Dash(__name__, external_stylesheets=external_stylesheets)$/;"	v
+base64_to_img_array	plot_common.py	/^def base64_to_img_array(data):$/;"	f
+base64_to_img_trace	plot_common.py	/^def base64_to_img_trace(data):$/;"	f
+button_github	app.py	/^button_github = dbc.Button($/;"	v
+children	app.py	/^                                children=[$/;"	v
+children	app.py	/^                        children=[$/;"	v
+children	app.py	/^                    children= [dbc.Row(dbc.Col(segmentation, width='auto', align='center'), justify='center'), dbc.Row(dbc.Col(meta)),]$/;"	v
+children	app.py	/^        children=[$/;"	v
+color	app.py	/^    color="primary",$/;"	v
+config	app.py	/^                                        config={$/;"	v
+dark	app.py	/^    dark=True,$/;"	v
+dummy_fig	plot_common.py	/^def dummy_fig():$/;"	f
+external_stylesheets	app.py	/^external_stylesheets = [dbc.themes.BOOTSTRAP, "assets\/segmentation-style.css"]$/;"	v
+fig	app.py	/^    fig = plot_common.dummy_fig()$/;"	v
+figure	app.py	/^                                        figure=make_default_figure(),$/;"	v
+fluid	app.py	/^            fluid=True,$/;"	v
+fluid	app.py	/^        fluid=True,$/;"	v
+header	app.py	/^header = dbc.Navbar($/;"	v
+href	app.py	/^    href="https:\/\/github.com\/aasgreen\/mlexflex",$/;"	v
+id	app.py	/^                                                id='msdnetwork',$/;"	v
+id	app.py	/^                                                id='random-forest',$/;"	v
+id	app.py	/^                                                id='scipy',$/;"	v
+id	app.py	/^                                        id="graph",$/;"	v
+id	app.py	/^                                id="app-title",$/;"	v
+id	app.py	/^                                id="navbar-collapse",$/;"	v
+id	app.py	/^                                id="segmentations-loading",$/;"	v
+id	app.py	/^                        id="transparent-loader-wrapper",$/;"	v
+id	app.py	/^                    id="app-content",$/;"	v
+id	app.py	/^        id="no-display",$/;"	v
+id	app.py	/^        id="segmentation-card",$/;"	v
+id	app.py	/^    id="gh-link",$/;"	v
+img_array_to_layout_image_fig	plot_common.py	/^def img_array_to_layout_image_fig(ia):$/;"	f
+img_array_to_mime_bytes	plot_common.py	/^def img_array_to_mime_bytes(img_array):$/;"	f
+img_array_to_pil_image	plot_common.py	/^def img_array_to_pil_image(ia):$/;"	f
+img_array_to_uri	plot_common.py	/^def img_array_to_uri(img_array):$/;"	f
+make_default_figure	app.py	/^def make_default_figure($/;"	f
+md	app.py	/^                        md=2,$/;"	v
+md	app.py	/^                        md=True,$/;"	v
+meta	app.py	/^meta = [$/;"	v
+navbar	app.py	/^                                    navbar=True,$/;"	v
+navbar	app.py	/^                                navbar=True,$/;"	v
+outline	app.py	/^                                                outline=True,$/;"	v
+outline	app.py	/^    outline=True,$/;"	v
+path_to_img_ndarray	plot_common.py	/^def path_to_img_ndarray(path):$/;"	f
+pil_image_to_layout_image_fig	plot_common.py	/^def pil_image_to_layout_image_fig(img):$/;"	f
+pil_image_to_ndarray	plot_common.py	/^def pil_image_to_ndarray(img):$/;"	f
+pil_image_to_uri	plot_common.py	/^def pil_image_to_uri(img):$/;"	f
+row	app.py	/^row = html.Div($/;"	v
+segmentation	app.py	/^segmentation = [$/;"	v
+server	app.py	/^server = app.server$/;"	v
+sticky	app.py	/^    sticky="top",$/;"	v
+store_shapes_seg_pair	app.py	/^def store_shapes_seg_pair(d, key, seg, remove_old=True):$/;"	f
+str_to_img_ndarrary	plot_common.py	/^def str_to_img_ndarrary(s):$/;"	f
+str_to_img_trace	plot_common.py	/^def str_to_img_trace(s):$/;"	f
+str_to_pil_img	plot_common.py	/^def str_to_pil_img(s):$/;"	f
+style	app.py	/^    style={"text-transform": "none"},$/;"	v
+type	app.py	/^                                type="circle",$/;"	v
