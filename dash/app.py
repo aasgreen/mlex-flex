@@ -30,7 +30,9 @@ def make_default_figure(
     #images=[plot_common.img_array_to_pil_image(image_stack[19])],
     images = [DEFAULT_IMAGE],
     shapes=[],
-    process_func = lambda x: skimage.exposure.equalize_hist(plot_common.pil_image_to_ndarray(x))
+    process_func = lambda x: plot_common.img_array_to_pil_image(
+                skimage.exposure.equalize_hist(
+                plot_common.pil_image_to_ndarray(x)) )
 ):
     fig = plot_common.dummy_fig()
     proc_images = [process_func(im) for im in images]

@@ -1,4 +1,5 @@
 TAG    			:= $$(git describe --tags)
+TAG				:= $$(git log -n 1 --pretty=format:%D ./docker/Dockerfile | grep -Po "(?<=tag: ).*")
 #TAG 			:= latest	
 #REGISTRY		:= registry-1.docker.io
 USER 			:= aasgreen
