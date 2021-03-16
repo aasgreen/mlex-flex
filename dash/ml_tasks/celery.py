@@ -1,13 +1,13 @@
 from celery import Celery
 
-celery = Celery('ml_tasks',
-        broker = 'amqp://'
-        backend = 'redis://'
+app = Celery('ml_tasks',
+        broker = 'amqp://guest:guest@rabbit:5672/',
+        backend = 'redis://red:6379/0',
         include=['ml_tasks.tasks'])
 
-celer.autodiscover_tasks()
+app.autodiscover_tasks()
 
-celery.conf.update(
+app.conf.update(
         result_expires=3600,
         )
 
@@ -17,4 +17,4 @@ def debug_task(self):
     print('Request: {0!r}'.format(self.request))
 
 if __name__ == '__main__':
-    celery.start()
+    app.start()

@@ -3,7 +3,7 @@ TAG    			:= $$(git describe --tags)
 #TAG 			:= latest	
 #REGISTRY		:= registry-1.docker.io
 USER 			:= aasgreen
-PROJECT			:= mlexflex-ml-dash-demo
+PROJECT			:= mlexflex-ml-worker-demo
 #REGISTRY_NAME	:= ${REGISTRY}/${PROJECT}/${IMG}
 
 IMG_WEB_SVC    		:= ${USER}/${PROJECT}:${TAG}

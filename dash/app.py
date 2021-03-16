@@ -17,10 +17,11 @@ import pims
 import pathlib
 import plot_common 
 import skimage.exposure
-import ml_tasks.ml_tasks as ml_tasks 
+import ml_tasks.tasks as ml_tasks 
+from dash import callback_context
 
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/segmentation-style.css"]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets, prevent_initial_callbacks = True)
 
 server = app.server
 app.title = "Flexible MLexchange"
@@ -186,9 +187,9 @@ segmentation = [
                                     ),
                                 ),
                                 dbc.Row(
-                                    html.h4(
-                                        id='return'
-                                        children = ''
+                                    html.H4(
+                                        id='return',
+                                         children = '',
                                         ), justify='center',
                                     ),
                                 ]
@@ -246,7 +247,26 @@ row = html.Div(
 )
 
 @app.callback(
-        [Ou
+        [
+            Output("return", "children"),
+            ],
+        [ Input('scipy', 'n_clicks'),
+          Input('random-forest', 'n_clicks'),
+          Input('msdnetwork', 'n_clicks'),
+          ]
+        )
+def launch_ml_task(*args):
+    trigger = callback_context.triggered[0]
+    print('Launching {}'.format(trigger['prop_id']))
+    trig_msg = json.dumps(trigger, indent=2)
+    print(trig_msg)
+    ml_tasks.hello()
+    res = ml_tasks.hello.delay()
+    ll = res.get(timeout = 1)
+    print('successful: {}'.format(ll))
+    return [str(trigger['prop_id'])]
+
+
 #app.layout = dbc.Container(
 #        row,
 #        fluid = True

@@ -2,18 +2,55 @@ version: '3'
 
 services:
     front:
-        build: './dash/docker/'
+        build: 
+            context: './dash/docker'
+            dockerfile: './Dockerfile'
         volumes:
-            - '${PWD}/../data:/app/data'
+            - '${PWD}/dash/../data:/app/data'
+            - '${PWD}/dash:/app/work'
         ports:
             - '8050:8050'
-    redis:
+              #        depends_on:
+              #- 'redis'
+              #    redis:
+              #        image: 'redis:latest'
+              #        volumes:
+              #            - "redis:/data
+              #
+        depends_on:
+            - ml_worker
+    red:
         image: 'redis:latest'
-
+        ports:
+            - "6379:6379"
+    rabbit:
+        image: 'rabbitmq:latest'
+        environment:
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+        ports:
+            - "5672:5672"
+              #
     ml_worker:
-        build: './ml_worker/docker'
+        build:
+            context: './dash/docker'
+            dockerfile: './Dockerfile'
+        volumes:
+            - '${PWD}/dash/../data:/app/data'
+            - '${PWD}/dash:/app/work'
+        
+        environment:
+            - RABBITMQ_HOST=rabbit
+            - RABBITMQ_USERNAME=gues
+            - RABBITMQ_PASSWORD=gues
+            - RABBITMQ_PORT=5672
+        depends_on:
+            - rabbit
+            - red
+        command: celery -A "ml_tasks" worker --loglevel=DEBUG
 
-        #    ml:
+              
+              #        #    ml:
         #        build: './ml_backend/docker/'
         #        ulimits:
         #            memlock: -1
@@ -34,3 +71,5 @@ services:
         #                        - capabilities:
         #                            - gpu
         #
+volumes:
+    redis: {}
