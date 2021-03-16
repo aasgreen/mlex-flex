@@ -17,6 +17,8 @@ import pims
 import pathlib
 import plot_common 
 import skimage.exposure
+import ml_tasks.ml_tasks as ml_tasks 
+
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/segmentation-style.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -183,6 +185,12 @@ segmentation = [
                                         ],
                                     ),
                                 ),
+                                dbc.Row(
+                                    html.h4(
+                                        id='return'
+                                        children = ''
+                                        ), justify='center',
+                                    ),
                                 ]
                             ),
                         ],
@@ -237,6 +245,8 @@ row = html.Div(
     ]
 )
 
+@app.callback(
+        [Ou
 #app.layout = dbc.Container(
 #        row,
 #        fluid = True
