@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    front:
+        build: './dash/docker/'
+        volumes:
+            - '${PWD}/../data:/app/data'
+        ports:
+            - '8050:8050'
+    redis:
+        image: 'redis:latest'
+
+    ml_worker:
+        build: './ml_worker/docker'
+
+        #    ml:
+        #        build: './ml_backend/docker/'
+        #        ulimits:
+        #            memlock: -1
+        #            stack: 67108864
+        #        volumes:
+        #            - '${PWD}/ml_backend:/work/'
+        #        ports:
+        #            - '8006:8000'
+        #        shm_size: '1g'
+        #        runtime: nvidia
+        #        environment:
+        #            NVIDIA_VISIBLE_DEVICES: all
+        #            NVIDIA_DRIVER_CAPABILITIES: all
+        #        deploy:
+        #            resources:
+        #                reservations:
+        #                    devices:
+        #                        - capabilities:
+        #                            - gpu
+        #
