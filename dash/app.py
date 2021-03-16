@@ -30,11 +30,12 @@ def make_default_figure(
     #images=[plot_common.img_array_to_pil_image(image_stack[19])],
     images = [DEFAULT_IMAGE],
     shapes=[],
-    process_func = skimage.exposure.equalize_hist
+    process_func = lambda x: skimage.exposure.equalize_hist(plot_common.pil_image_to_ndarray(x))
 ):
     fig = plot_common.dummy_fig()
-    proc_images = process_func(images)
-    plot_common.add_layout_images_to_fig(fig, images)
+    proc_images = [process_func(im) for im in images]
+    print(proc_images)
+    plot_common.add_layout_images_to_fig(fig, proc_images)
     fig.update_layout(
         {
             "dragmode": "drawopenpath",
