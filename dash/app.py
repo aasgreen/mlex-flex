@@ -24,7 +24,7 @@ import yaml
 import jl # kubernetes job library
 from numpy import random
 from dask_kubernetes import KubeCluster
-from dask.disributed import Client
+from dask.distributed import Client
 import dask.array as da
 
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/segmentation-style.css"]
