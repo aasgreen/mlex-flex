@@ -11,7 +11,7 @@ import base64
 import matplotlib.pyplot as plt
 import PIL.Image
 import pickle
-from time import time
+from time import time, sleep
 from joblib import Memory
 import pims
 import pathlib
@@ -19,6 +19,10 @@ import plot_common
 import skimage.exposure
 import ml_tasks.tasks as ml_tasks 
 from dash import callback_context
+from kubernetes import client, config
+import yaml
+import jl # kubernetes job library
+from numpy import random
 
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/segmentation-style.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets, prevent_initial_callbacks = True)
@@ -28,6 +32,13 @@ app.title = "Flexible MLexchange"
 
 
 DEFAULT_IMAGE_PATH = pathlib.Path('../data/input/sample_data.tiff')
+seg_path = '/data/out/seg-out.png'
+SEG_IMAGE_PATH = pathlib.Path(seg_path)
+try:
+    SEG_IMAGE_PATH.unlink() #make sure we have a clean directory
+except FileNotFoundError:
+    pass
+    # file doesn't exist, we good, move on
 DEFAULT_IMAGE = PIL.Image.open(DEFAULT_IMAGE_PATH)
 def make_default_figure(
     #images=[plot_common.img_array_to_pil_image(image_stack[19])],
@@ -199,6 +210,59 @@ segmentation = [
                 ]
             ),
         ]
+# Image Segmentation
+results= [
+    dbc.Card(
+        id="results-card",
+        children=[
+            dbc.CardHeader("Look at this incredible segmentation!"),
+            dbc.CardBody(
+                [
+                    # Wrap dcc.Loading in a div to force transparency when loading
+                    html.Div(
+                        id="results-transparent-loader-wrapper",
+                        children=[
+                            dcc.Loading(
+                                id="results-loading",
+                                type="circle",
+                                children=[
+                                    # Graph
+                                    dcc.Graph(
+                                        id="results-graph",
+                                        figure=make_default_figure(),
+                                        config={
+                                            "modeBarButtonsToAdd": [
+                                                "drawrect",
+                                                "drawopenpath",
+                                                "eraseshape",
+                                            ]
+                                        },
+                                    ),
+                                ],
+                            )
+                        ],
+                    ),
+                ]
+            ),
+            dbc.CardFooter(
+                [
+                    html.Div(
+                        children=[
+                                dbc.Row(
+                                            dbc.Button(
+                                                "Download Image",
+                                                id='dl-image',
+                                                outline=True,
+                                                ),
+                                ),
+                                ]
+                            ),
+                        ],
+                    ),
+                ]
+            ),
+        ]
+
 
 meta = [
     html.Div(
@@ -225,7 +289,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     id="app-content",
-                    children= [dbc.Row(dbc.Col(segmentation, width='auto', align='center'), justify='center'), dbc.Row(dbc.Col(meta)),]
+                    children= [dbc.Row([dbc.Col(segmentation, width='auto', align='center'),dbc.Col(results, width='auto')], justify='center'), dbc.Row(dbc.Col(meta)),]
                 ),
             ],
             fluid=True,
@@ -249,6 +313,7 @@ row = html.Div(
 @app.callback(
         [
             Output("return", "children"),
+            Output("results-graph", "figure"),
             ],
         [ Input('scipy', 'n_clicks'),
           Input('random-forest', 'n_clicks'),
@@ -260,11 +325,44 @@ def launch_ml_task(*args):
     print('Launching {}'.format(trigger['prop_id']))
     trig_msg = json.dumps(trigger, indent=2)
     print(trig_msg)
-    ml_tasks.hello()
-    res = ml_tasks.hello.delay()
-    ll = res.get(timeout = 1)
-    print('successful: {}'.format(ll))
-    return [str(trigger['prop_id'])]
+#    ml_tasks.hello()
+#    res = ml_tasks.hello.delay()
+#    ll = res.get(timeout = 1)
+#    print('successful: {}'.format(ll))
+    succeeded = False
+    if trigger['prop_id'] == "scipy.n_clicks":
+        print('launching scipy container...')
+        job_name = 'segmenting-j{}'.format(random.rand())
+        try:
+            api, job = jl.main(job_name)
+            config.load_incluster_config()
+
+            print('job name: {}'.format(job_name))
+            # type(api) is BatchV1Api has method list_job_for_all_namespaces 
+            while succeeded == False:
+                ret = api.read_namespaced_job(name=job_name, namespace = 'default')
+                print(ret.status.succeeded)
+                if ret.status.succeeded == True:
+                    succeeded = True
+                else:
+                    sleep(10)
+        except Exception as e:
+            print('no no{}'.format(e))
+            # first pass, I think it will just continue on and not wait for a succeed. We need to use a while loop.
+            # if the job returned, then we should be able to access the segmented image
+        try:
+            seg_img = PIL.Image.open(seg_path)
+
+            seg_figure = make_default_figure([seg_img])
+        except Exception as e:
+            print('not loaded: {}'.format(e))
+        print('succeeded!')
+        if succeeded == True:
+
+            print('yay')
+            return ['Job Finished',
+                    seg_figure]
+    return ['', '']
 
 
 #app.layout = dbc.Container(
