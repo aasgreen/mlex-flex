@@ -23,6 +23,9 @@ from kubernetes import client, config
 import yaml
 import jl # kubernetes job library
 from numpy import random
+from dask_kubernetes import KubeCluster
+from dask.disributed import Client
+import dask.array as da
 
 external_stylesheets = [dbc.themes.BOOTSTRAP, "assets/segmentation-style.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets, prevent_initial_callbacks = True)
@@ -194,6 +197,11 @@ segmentation = [
                                                 id='msdnetwork',
                                                 outline=True,
                                                 ),
+                                            dbc.Button(
+                                                "Dask Cluster",
+                                                id='daskcluster',
+                                                outline=True,
+                                                ),
                                         ],
                                     ),
                                 ),
@@ -362,6 +370,18 @@ def launch_ml_task(*args):
             print('yay')
             return ['Job Finished',
                     seg_figure]
+
+    if trigger['prop_id'] == "daskcluster.n_clicks":
+       cluster = KubeCluster.from_yaml('dash-worker-spec.yaml')
+       cluster.scale(2)
+
+       client = Client(cluster)
+       array = da.ones((1000, 1000, 1000))
+       start_t = time()
+       print(array.mean().compute())
+       end_t = time()
+       print('total time: {}'.format(end_t-start_t))
+       cluster.close()
     return ['', '']
 
 

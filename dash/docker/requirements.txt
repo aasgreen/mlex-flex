@@ -20,3 +20,5 @@ pims
 gunicorn
 celery
 redis
+dask
+dask_kubernetes
